@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { useState, useEffect } from 'react';
+import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
+import firebaseApp from './firebase';
+import FullPage from './Home/FullPage';
+
 
 function App() {
+  const db = getFirestore(firebaseApp)
+  const [data, setData] = useState('');
+
+  useEffect(() => {
+    async function pepare() {
+      const docRef = collection(db, "mercantil");
+      const docSnap = await getDocs(docRef);
+      docSnap.forEach(doc => {
+        console.log(doc.data())
+      })
+    }
+
+    pepare()
+
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <FullPage/>
+
+    </>
   );
 }
 
